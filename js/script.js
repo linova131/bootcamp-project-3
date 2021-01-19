@@ -1,6 +1,8 @@
 const nameField = document.getElementById('name');
 nameField.focus();
 
+const emailField = document.getElementById('email');
+
 const otherJobRole = document.getElementById('other-job-role');
 otherJobRole.style.display = "none";
 
@@ -68,3 +70,65 @@ registerForActivities.addEventListener('change', (e) => {
     
 });
 
+const paymentMethod = document.getElementById('payment');
+const creditcardDiv = document.getElementById('credit-card');
+const paypalDiv = document.getElementById('paypal');
+const bitcoinDiv = document.getElementById('bitcoin');
+const paymentSections = [creditcardDiv, paypalDiv, bitcoinDiv];
+
+paymentMethod[1].selected = true;
+paypalDiv.style.display = 'none';
+bitcoinDiv.style.display = 'none';
+
+paymentMethod.addEventListener('change', (e) => {
+    const selectedPayment = e.target.value;
+    for (let i=0; i <paymentSections.length; i++) {
+        if(selectedPayment === paymentSections[i].id) {
+            paymentSections[i].style.display = 'block';
+        } else {
+            paymentSections[i].style.display = 'none';
+        };
+    };
+});
+
+const form = document.querySelector('form');
+
+form.addEventListener('submit', ()=>{
+
+
+});
+
+function validateName(name) {
+    const nameIsValid = /^[a-zA-Z]+ ?[a-zA-Z]*? ?[a-zA-Z]*?$/.test(name);
+    return nameIsValid;
+}
+
+function validateEmail(email) {
+    const emailIsValid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
+    return emailIsValid;
+}
+
+function validateActivites() {
+
+}
+
+function validateCreditCard() {
+    let creditCardIsValid;
+    const creditcardNumber = document.getElementById('cc-num').value;
+    const creditcardNumIsValid = /^\d{13}\d?\d?\d?$/.test(creditcardNumber);
+    
+    const zipCode = document.getElementById('zip').value;
+    const zipCodeIsValid = /^\d{5}$/.test(zipCode);
+
+    const cvv = document.getElementById('cvv').value;
+    const cvvIsValid = /^\d{3}$/.test(cvv);
+
+    if (creditcardNumIsValid && zipCodeIsValid && cvvIsValid) {
+        creditCardIsValid = true;
+    } else {
+        creditCardIsValid = false;
+    }
+
+    return creditCardIsValid;
+
+}
