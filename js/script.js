@@ -241,12 +241,10 @@ registerForActivities.addEventListener('change', (e) => {
                 checkboxes[i].parentElement.classList.remove('disabled');
             };
         }
-
     };
 
     if (clicked.checked) {
         totalCost += eventPrice;
-
     } else {
         totalCost -= eventPrice;
     };
