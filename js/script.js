@@ -158,8 +158,11 @@ bitcoinDiv.style.display = 'none';
 
 //Listens for changes to the role selection. If other is chosen, a text input box will generate.
 jobRoleSelect.addEventListener('change', (e) => {
-    if (e.target.value="other") {
+    
+    if (e.target.value==="other") {
         otherJobRole.style.display = "block";
+    } else {
+        otherJobRole.style.display = "none";
     };
 });
 
@@ -232,8 +235,10 @@ registerForActivities.addEventListener('change', (e) => {
 
             if(clicked.checked){
                 checkboxes[i].disabled = true;
+                checkboxes[i].parentElement.classList.add('disabled');
             } else {
                 checkboxes[i].disabled = false;
+                checkboxes[i].parentElement.classList.remove('disabled');
             };
         }
 
