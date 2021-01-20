@@ -26,6 +26,7 @@ let totalCost = 0;
 
 const paymentMethod = document.getElementById('payment');
 const creditcardDiv = document.getElementById('credit-card');
+const creditcardNumber = document.getElementById('cc-num');
 const paypalDiv = document.getElementById('paypal');
 const bitcoinDiv = document.getElementById('bitcoin');
 const paymentSections = [creditcardDiv, paypalDiv, bitcoinDiv];
@@ -58,7 +59,13 @@ function validateName(name) {
 function validateEmail(email) {
     const emailIsValid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(email.value);
     const emailHint = document.getElementById('email-hint');
-
+    
+    if(emailField.value === ""){
+        emailHint.textContent = "Please provide an email address";
+    } else{
+        emailHint.textContent = "Email address must be formatted correctly";
+    };
+        
     showHint(emailIsValid, emailHint);
 
     return emailIsValid;
@@ -91,8 +98,7 @@ function validateActivities() {
 function validateCreditCard() {
 
     let creditCardIsValid;
-    const creditcardNumber = document.getElementById('cc-num').value;
-    const creditcardNumIsValid = /^\d{13}\d?\d?\d?$/.test(creditcardNumber);
+    const creditcardNumIsValid = /^\d{13}\d?\d?\d?$/.test(creditcardNumber.value);
     const cardNumberHint = document.getElementById('cc-hint');
 
     showHint(creditcardNumIsValid, cardNumberHint);
@@ -188,10 +194,27 @@ checkboxes.forEach( (checkbox) => {
 registerForActivities.addEventListener('change', (e) => {
     const clicked = e.target;
     const eventTime = clicked.getAttribute('data-day-and-time');
+    console.log(eventTime);
     const eventPrice = parseInt(clicked.getAttribute('data-cost'));
- 
+     
+    for(let i = 0; i < checkboxes.length; i++){
+        const compareTime = checkboxes[i].getAttribute('data-day-and-time');
+        
+        if(eventTime === compareTime && clicked !== checkboxes[i]){
+            checkboxes[i].disabled = true;
+
+            if(clicked.checked){
+                checkboxes[i].disabled = true;
+            } else {
+                checkboxes[i].disabled = false;
+            };
+        }
+
+    };
+
     if (clicked.checked) {
         totalCost += eventPrice;
+
     } else {
         totalCost -= eventPrice;
     };
@@ -210,6 +233,9 @@ paymentMethod.addEventListener('change', (e) => {
     };
 });
 
+nameField.addEventListener('keyup', () => {
+    validateName(nameField);
+});
 
 //Submission and Errors
 
