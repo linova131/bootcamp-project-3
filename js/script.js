@@ -109,35 +109,40 @@ function validateActivities() {
     return activitiesAreValid;
 }
 
-//validateCreditCard function looks at the credit card number field, the zip code field, and the ccv field to  see if they contain valid input
+//validateCreditCard function looks at the credit card number field to determine if the length is appropriate
 
 function validateCreditCard() {
 
-    let creditCardIsValid;
     const creditcardNumIsValid = /^\d{13}\d?\d?\d?$/.test(creditcardNumber.value);
     const cardNumberHint = document.getElementById('cc-hint');
 
     showHint(creditcardNumIsValid, cardNumberHint);
 
+     return creditcardNumIsValid;
+}
+
+//validateZipCode function determines if the zipcode is a 5 digit number
+
+function validateZipCode() {
     const zipCode = document.getElementById('zip').value;
     const zipCodeIsValid = /^\d{5}$/.test(zipCode);
     const zipCodeHint = document.getElementById('zip-hint');
 
     showHint(zipCodeIsValid, zipCodeHint);
 
+    return zipCodeIsValid;
+}
+
+//validateCVV function determines if the CVV is a 3 digit number
+
+function validateCVV() {
     const cvv = document.getElementById('cvv').value;
     const cvvIsValid = /^\d{3}$/.test(cvv);
     const cvvHint = document.getElementById('cvv-hint');
 
     showHint(cvvIsValid, cvvHint);
 
-    if (creditcardNumIsValid && zipCodeIsValid && cvvIsValid) {
-        creditCardIsValid = true;
-    } else {
-        creditCardIsValid = false;
-    }
-
-    return creditCardIsValid;
+    return cvvIsValid;
 }
 
 
@@ -264,9 +269,9 @@ paymentMethod.addEventListener('change', (e) => {
     };
 });
 
-//Listens for keystrokes in name field in order to real time validate
-nameField.addEventListener('keyup', () => {
-    validateName(nameField);
+//Listens for keystrokes in credit card field in order to real time validate
+creditcardNumber.addEventListener('keyup', () => {
+    validateCreditCard();
 });
 
 //Submission and Errors
@@ -284,6 +289,8 @@ form.addEventListener('submit', (e)=>{
     //Determines if credit card validation needs to happen, or if alternate payment method has been selected.
     if(paymentMethod.value === 'credit-card'){
         validCheck.push(validateCreditCard());
+        validCheck.push(validateZipCode());
+        validCheck.push(validateCVV());
     };
     
     if (validCheck.includes(false)){
